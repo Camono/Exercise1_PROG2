@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
@@ -7,11 +8,12 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -51,13 +53,18 @@ public class HomeController implements Initializable {
 
         // Sort button example:
         sortBtn.setOnAction(actionEvent -> {
+            Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
+
             if(sortBtn.getText().equals("Sort (asc)")) {
-                // TODO sort observableMovies ascending
+                // sort observableMovies ascending
                 sortBtn.setText("Sort (desc)");
             } else {
-                // TODO sort observableMovies descending
+                // sort observableMovies descending
                 sortBtn.setText("Sort (asc)");
+                sort = sort.reversed();
             }
+            SortedList<Movie> items = movieListView.getItems().sorted(sort);
+            movieListView.setItems(items);
         });
 
 
