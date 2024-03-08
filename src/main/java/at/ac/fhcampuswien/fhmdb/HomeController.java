@@ -42,19 +42,18 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        observableMovies.addAll(allMovies);         // add dummy data to observable list
+        // add dummy data to observable list
+        observableMovies.addAll(allMovies);
 
         // initialize UI stuff
         movieListView.setItems(observableMovies);   // set data of observable list to list view
         movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
 
-        // TODO add genre filter items with genreComboBox.getItems().addAll(...)
+        // add genre filter items with genreComboBox.getItems().addAll(...)
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.getItems().addAll(Genre.values());
 
-
-
-        // TODO add event handlers to buttons and call the regarding methods
+        // add event handlers to buttons and call the regarding methods
         // either set event handlers in the fxml file (onAction) or add them here
 
         //case 1: only genre set via dropdown
@@ -63,11 +62,9 @@ public class HomeController implements Initializable {
         //case 4: none is set
 
         searchBtn.setOnAction(actionEvent -> {
-                    String filterItem = genreComboBox.getValue() != null ? genreComboBox.getValue().toString() : "ALL";
-                    String filterSearch = searchField.getText().toLowerCase();
-
+            String filterItem = genreComboBox.getValue() != null ? genreComboBox.getValue().toString() : "ALL";
+            String filterSearch = searchField.getText().toLowerCase();
             ObservableList<Movie> filteredMovies;
-
             if (filterItem == null || "ALL".equals(filterItem)) {
                 // If nothing is selected display all movies based on search
                 filteredMovies = observableMovies.filtered(a ->
@@ -83,19 +80,16 @@ public class HomeController implements Initializable {
             movieListView.setItems(filteredMovies);
         });
 
+        // Clear button to clear filters:
         clearBtn.setOnAction(actionEvent -> {
            movieListView.setItems(observableMovies);
            genreComboBox.getSelectionModel().clearSelection();
            searchField.clear();
-
         });
 
-
-
-        // Sort button example:
+        // Sort button:
         sortBtn.setOnAction(actionEvent -> {
             Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
-
             if(sortBtn.getText().equals("Sort (asc)")) {
                 // sort observableMovies ascending
                 sortBtn.setText("Sort (desc)");
@@ -107,7 +101,5 @@ public class HomeController implements Initializable {
             SortedList<Movie> items = movieListView.getItems().sorted(sort);
             movieListView.setItems(items);
         });
-
-
     }
 }
