@@ -1,6 +1,5 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,18 +17,24 @@ public class Movie {
     public void setTitle(String title) {
         if(title != null && !title.isEmpty()) {
             this.title = title;
+        }else{
+            throw new IllegalArgumentException("Invalid title");
         }
     }
 
     public void setDescription(String description) {
-        if(description != null && !title.isEmpty()) {
+        if(description != null && !description.isEmpty()) {
             this.description = description;
+        }else{
+            throw new IllegalArgumentException("Invalid description");
         }
     }
 
     public void setGenres(List<Genre> genres) {
-        if(genres != null && !title.isEmpty()) {
+        if(genres != null && !genres.isEmpty()) {
             this.genres = genres;
+        }else{
+            throw new IllegalArgumentException("Invalid genre");
         }
     }
 

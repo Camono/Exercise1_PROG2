@@ -7,15 +7,90 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HomeControllerTest {
 
+    Movie testmovie;
     @BeforeEach
     void setUp() {
+        testmovie = new Movie("Scarface", "Tony Montana goes to Miami", Arrays.asList(Genre.ACTION, Genre.ADVENTURE, Genre.CRIME));
+    }
 
+    @Test
+    void shouldSetTitle(){
+        String newTitle = "Updated Title";
+        testmovie.setTitle(newTitle);
+        assertEquals(testmovie.getTitle(), newTitle);
+    }
+
+    @Test
+    void shouldSetDescription(){
+        String newDescription = "Updated description";
+        testmovie.setDescription(newDescription);
+        assertEquals(testmovie.getDescription(), newDescription);
+    }
+
+    @Test
+    void shouldSetGenres(){
+        var newGenres = Arrays.asList(Genre.FAMILY);
+        testmovie.setGenres(newGenres);
+        assertEquals(testmovie.getGenres(), newGenres);
+    }
+
+    @Test
+    void shouldThrowExceptionForInvalidTitleEmpty(){
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testmovie.setTitle("");
+        });
+        String message = "Invalid title";
+        assertEquals(exception.getMessage(), message);
+    }
+    @Test
+    void shouldThrowExceptionForInvalidTitleNull(){
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testmovie.setTitle(null);
+        });
+        String message = "Invalid title";
+        assertEquals(exception.getMessage(), message);
+    }
+
+    @Test
+    void shouldThrowExceptionForInvalidDescriptionEmpty(){
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testmovie.setDescription("");
+        });
+        String message = "Invalid description";
+        assertEquals(exception.getMessage(), message);
+    }
+    @Test
+    void shouldThrowExceptionForInvalidDescriptionNull(){
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testmovie.setDescription(null);
+        });
+        String message = "Invalid description";
+        assertEquals(exception.getMessage(), message);
+    }
+
+    @Test
+    void shouldThrowExceptionForInvalidGenreNull(){
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testmovie.setGenres(null);
+        });
+        String message = "Invalid genre";
+        assertEquals(exception.getMessage(), message);
+    }
+    @Test
+    void shouldThrowExceptionForInvalidGenreEmpty(){
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            testmovie.setGenres(Arrays.asList());
+        });
+        String message = "Invalid genre";
+        assertEquals(exception.getMessage(), message);
     }
 
     @Test
@@ -99,9 +174,9 @@ class HomeControllerTest {
     void sortListAscending_check_if_sorted_correctly_equals() {
         // Arrange
         Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
-        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "", List.of(Genre.ACTION)),
-                new Movie("C", "", List.of(Genre.COMEDY)),
-                new Movie("B", "", List.of(Genre.BIOGRAPHY)));
+        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "asdf", List.of(Genre.ACTION)),
+                new Movie("C", "ASD", List.of(Genre.COMEDY)),
+                new Movie("B", "asd", List.of(Genre.BIOGRAPHY)));
         // Act with same logic from onAction
         ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
         // Assert
@@ -113,9 +188,9 @@ class HomeControllerTest {
     void sortListAscending_check_if_sorted_correctly_notEquals() {
         // Arrange
         Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
-        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("B", "", List.of(Genre.BIOGRAPHY)),
-                new Movie("C", "", List.of(Genre.COMEDY)),
-                new Movie("A", "", List.of(Genre.ACTION)));
+        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("B", "asdf", List.of(Genre.BIOGRAPHY)),
+                new Movie("C", "ASD", List.of(Genre.COMEDY)),
+                new Movie("A", "asd", List.of(Genre.ACTION)));
         // Act with same logic from onAction
         ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
         // Assert
@@ -127,9 +202,9 @@ class HomeControllerTest {
     void sortListDescending_check_if_sorted_correctly_equals() {
         // Arrange
         Comparator<Movie> sort = Comparator.comparing(Movie::getTitle).reversed();
-        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "", List.of(Genre.ACTION)),
-                new Movie("C", "", List.of(Genre.COMEDY)),
-                new Movie("B", "", List.of(Genre.BIOGRAPHY)));
+        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "asdf", List.of(Genre.ACTION)),
+                new Movie("C", "ASD", List.of(Genre.COMEDY)),
+                new Movie("B", "asd", List.of(Genre.BIOGRAPHY)));
         // Act with same logic from onAction
         ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
         // Assert
@@ -141,9 +216,9 @@ class HomeControllerTest {
     void sortListDescending_check_if_sorted_correctly_notEquals() {
         // Arrange
         Comparator<Movie> sort = Comparator.comparing(Movie::getTitle).reversed();
-        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "", List.of(Genre.ACTION)),
-                new Movie("B", "", List.of(Genre.BIOGRAPHY)),
-                new Movie("C", "", List.of(Genre.COMEDY)));
+        ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "asdf", List.of(Genre.ACTION)),
+                new Movie("B", "ASD", List.of(Genre.BIOGRAPHY)),
+                new Movie("C", "asd", List.of(Genre.COMEDY)));
         // Act with same logic from onAction
         ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
         // Assert
