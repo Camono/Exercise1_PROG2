@@ -16,19 +16,19 @@ public class Movie {
     }
 
     public void setTitle(String title) {
-        if(title != null) {
+        if(title != null && !title.isEmpty()) {
             this.title = title;
         }
     }
 
     public void setDescription(String description) {
-        if(description != null) {
+        if(description != null && !title.isEmpty()) {
             this.description = description;
         }
     }
 
     public void setGenres(List<Genre> genres) {
-        if(genres != null) {
+        if(genres != null && !title.isEmpty()) {
             this.genres = genres;
         }
     }
