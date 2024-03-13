@@ -85,7 +85,7 @@ class HomeControllerTest {
         assertEquals(exception.getMessage(), message);
     }
     @Test
-    void should_Throw_Exception_For_Invalid_Genre_Empty(){
+    void should_Throw_Exception_For_Invalid_Genre_0Empty(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             testmovie.setGenres(Arrays.asList());
         });
@@ -100,7 +100,7 @@ class HomeControllerTest {
         //Act
         int actual = allMovies.size();
         //Assert
-        assertEquals(24, actual, "Expected all moies are listed");
+        assertEquals(24, actual, "Expected all movies are listed");
     }
 
     @Test
