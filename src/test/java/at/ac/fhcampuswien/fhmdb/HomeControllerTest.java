@@ -22,28 +22,28 @@ class HomeControllerTest {
     }
 
     @Test
-    void shouldSetTitle(){
+    void should_Set_Title(){
         String newTitle = "Updated Title";
         testmovie.setTitle(newTitle);
         assertEquals(testmovie.getTitle(), newTitle);
     }
 
     @Test
-    void shouldSetDescription(){
+    void should_Set_Description(){
         String newDescription = "Updated description";
         testmovie.setDescription(newDescription);
         assertEquals(testmovie.getDescription(), newDescription);
     }
 
     @Test
-    void shouldSetGenres(){
+    void should_Set_Genres(){
         var newGenres = Arrays.asList(Genre.FAMILY);
         testmovie.setGenres(newGenres);
         assertEquals(testmovie.getGenres(), newGenres);
     }
 
     @Test
-    void shouldThrowExceptionForInvalidTitleEmpty(){
+    void should_Throw_Exception_For_Invalid_Title_Empty(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             testmovie.setTitle("");
         });
@@ -51,7 +51,7 @@ class HomeControllerTest {
         assertEquals(exception.getMessage(), message);
     }
     @Test
-    void shouldThrowExceptionForInvalidTitleNull(){
+    void should_Throw_Exception_For_Invalid_Title_Null(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             testmovie.setTitle(null);
         });
@@ -60,7 +60,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void shouldThrowExceptionForInvalidDescriptionEmpty(){
+    void should_Throw_Exception_For_Invalid_Description_Empty(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             testmovie.setDescription("");
         });
@@ -68,7 +68,7 @@ class HomeControllerTest {
         assertEquals(exception.getMessage(), message);
     }
     @Test
-    void shouldThrowExceptionForInvalidDescriptionNull(){
+    void should_Throw_Exception_For_Invalid_Description_Null(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             testmovie.setDescription(null);
         });
@@ -77,7 +77,7 @@ class HomeControllerTest {
     }
 
     @Test
-    void shouldThrowExceptionForInvalidGenreNull(){
+    void should_Throw_Exception_For_Invalid_Genre_Null(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             testmovie.setGenres(null);
         });
@@ -85,7 +85,7 @@ class HomeControllerTest {
         assertEquals(exception.getMessage(), message);
     }
     @Test
-    void shouldThrowExceptionForInvalidGenreEmpty(){
+    void should_Throw_Exception_For_Invalid_Genre_Empty(){
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             testmovie.setGenres(Arrays.asList());
         });
@@ -100,7 +100,7 @@ class HomeControllerTest {
         //Act
         int actual = allMovies.size();
         //Assert
-        assertEquals(24, actual);
+        assertEquals(24, actual, "Expected all moies are listed");
     }
 
     @Test
