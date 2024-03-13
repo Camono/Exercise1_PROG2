@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
@@ -64,42 +63,54 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(actionEvent -> {
             String filterItem = genreComboBox.getValue() != null ? genreComboBox.getValue().toString() : "ALL";
             String filterSearch = searchField.getText().toLowerCase();
-            ObservableList<Movie> filteredMovies;
-            if (filterItem == null || "ALL".equals(filterItem)) {
-                // If nothing is selected display all movies based on search
-                filteredMovies = observableMovies.filtered(a ->
-                        a.getTitle().toLowerCase().contains(filterSearch) ||
-                                a.getDescription().toLowerCase().contains(filterSearch));
-            } else {
-                // Filter based on the selected genre
-                filteredMovies = observableMovies.filtered(a ->
-                        a.getGenres().contains(Genre.valueOf(filterItem)) &&
-                                (a.getTitle().toLowerCase().contains(filterSearch) ||
-                                        a.getDescription().toLowerCase().contains(filterSearch)));
-            }
-            movieListView.setItems(filteredMovies);
+            movieListView.setItems(filter(filterItem, filterSearch, observableMovies));
         });
 
         // Clear button to clear filters:
-        clearBtn.setOnAction(actionEvent -> {
-           movieListView.setItems(observableMovies);
-           genreComboBox.getSelectionModel().clearSelection();
-           searchField.clear();
-        });
+        clearBtn.setOnAction(actionEvent -> clear(observableMovies));
 
         // Sort button:
         sortBtn.setOnAction(actionEvent -> {
-            Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
-            if(sortBtn.getText().equals("Sort (asc)")) {
-                // sort observableMovies ascending
-                sortBtn.setText("Sort (desc)");
-            } else {
-                // sort observableMovies descending
-                sortBtn.setText("Sort (asc)");
-                sort = sort.reversed();
-            }
-            SortedList<Movie> items = movieListView.getItems().sorted(sort);
-            movieListView.setItems(items);
+            movieListView.setItems(sort(observableMovies, sortBtn.getText()));
+            sortBtn.setText(getInvertedSortButtonText(sortBtn.getText()));
         });
+    }
+
+    public ObservableList<Movie> filter(String filterItem, String filterSearch, ObservableList<Movie> allMovies) {
+        if (filterItem == null || "ALL".equals(filterItem)) {
+            // If nothing is selected display all movies based on search
+            return allMovies.filtered(a ->
+                    a.getTitle().toLowerCase().contains(filterSearch) ||
+                            a.getDescription().toLowerCase().contains(filterSearch));
+        } else {
+            // Filter based on the selected genre
+            return  allMovies.filtered(a ->
+                    a.getGenres().contains(Genre.valueOf(filterItem)) &&
+                            (a.getTitle().toLowerCase().contains(filterSearch) ||
+                                    a.getDescription().toLowerCase().contains(filterSearch)));
+        }
+    }
+
+    public void clear(ObservableList<Movie> allMovies) {
+        movieListView.setItems(allMovies);
+        genreComboBox.getSelectionModel().clearSelection();
+        searchField.clear();
+    }
+
+    public ObservableList<Movie> sort(ObservableList<Movie> allMovies, String sortBtnText) {
+        Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
+        if (sortBtnText.equals("Sort (desc)")) {
+            // sort observableMovies ascending
+            sort = sort.reversed();
+        }
+        return allMovies.sorted(sort);
+    }
+
+    public String getInvertedSortButtonText(String text) {
+        if (text.equals("Sort (asc)")) {
+            return ("Sort (desc)");
+        } else {
+            return ("Sort (asc)");
+        }
     }
 }

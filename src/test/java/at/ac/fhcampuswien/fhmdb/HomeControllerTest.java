@@ -7,9 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -173,12 +171,12 @@ class HomeControllerTest {
     @Test
     void sortListAscending_check_if_sorted_correctly_equals() {
         // Arrange
-        Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
+        HomeController hc = new HomeController();
         ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "asdf", List.of(Genre.ACTION)),
                 new Movie("C", "ASD", List.of(Genre.COMEDY)),
                 new Movie("B", "asd", List.of(Genre.BIOGRAPHY)));
         // Act with same logic from onAction
-        ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
+        ObservableList<Movie> sortedMovies = hc.sort(observableMovies, "Sort (asc)");
         // Assert
         assertEquals(observableMovies.get(0), sortedMovies.get(0), "Movie A is expected to be the first movie in the list.");
         assertEquals(observableMovies.get(1), sortedMovies.get(2), "Movie C is expected to be the last movie in the list.");
@@ -187,12 +185,12 @@ class HomeControllerTest {
     @Test
     void sortListAscending_check_if_sorted_correctly_notEquals() {
         // Arrange
-        Comparator<Movie> sort = Comparator.comparing(Movie::getTitle);
+        HomeController hc = new HomeController();
         ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("B", "asdf", List.of(Genre.BIOGRAPHY)),
                 new Movie("C", "ASD", List.of(Genre.COMEDY)),
                 new Movie("A", "asd", List.of(Genre.ACTION)));
         // Act with same logic from onAction
-        ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
+        ObservableList<Movie> sortedMovies = hc.sort(observableMovies, "Sort (asc)");
         // Assert
         assertNotEquals(observableMovies.get(2), sortedMovies.get(2), "Movie A is expected to not be the last movie in sorted list.");
         assertNotEquals(observableMovies.get(0), sortedMovies.get(0), "Movie B is expected to not be the first movie in sorted list.");
@@ -201,12 +199,12 @@ class HomeControllerTest {
     @Test
     void sortListDescending_check_if_sorted_correctly_equals() {
         // Arrange
-        Comparator<Movie> sort = Comparator.comparing(Movie::getTitle).reversed();
+        HomeController hc = new HomeController();
         ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "asdf", List.of(Genre.ACTION)),
                 new Movie("C", "ASD", List.of(Genre.COMEDY)),
                 new Movie("B", "asd", List.of(Genre.BIOGRAPHY)));
         // Act with same logic from onAction
-        ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
+        ObservableList<Movie> sortedMovies = hc.sort(observableMovies, "Sort (desc)");
         // Assert
         assertEquals(observableMovies.get(0), sortedMovies.get(2), "Movie A is expected to be the last movie in the list.");
         assertEquals(observableMovies.get(1), sortedMovies.get(0), "Movie C is expected to be the first movie in the list.");
@@ -215,14 +213,32 @@ class HomeControllerTest {
     @Test
     void sortListDescending_check_if_sorted_correctly_notEquals() {
         // Arrange
-        Comparator<Movie> sort = Comparator.comparing(Movie::getTitle).reversed();
+        HomeController hc = new HomeController();
         ObservableList<Movie> observableMovies = FXCollections.observableArrayList(new Movie("A", "asdf", List.of(Genre.ACTION)),
                 new Movie("B", "ASD", List.of(Genre.BIOGRAPHY)),
                 new Movie("C", "asd", List.of(Genre.COMEDY)));
         // Act with same logic from onAction
-        ObservableList<Movie> sortedMovies = observableMovies.sorted(sort);
+        ObservableList<Movie> sortedMovies = hc.sort(observableMovies, "Sort (desc)");
         // Assert
         assertNotEquals(observableMovies.get(0), sortedMovies.get(0), "Movie A is expected to not be the first movie in sorted list.");
         assertNotEquals(observableMovies.get(1), sortedMovies.get(2), "Movie B is expected to not be the last movie in sorted list.");
+    }
+
+    @Test
+    void setSortBtnText_asc_to_desc() {
+        // Arrange
+        HomeController hc = new HomeController();
+        String text = "Sort (asc)";
+        // Assert
+        assertEquals("Sort (desc)", hc.getInvertedSortButtonText(text));
+    }
+
+    @Test
+    void setSortBtnText_desc_to_asc() {
+        // Arrange
+        HomeController hc = new HomeController();
+        String text = "Sort (desc)";
+        // Assert
+        assertEquals("Sort (asc)", hc.getInvertedSortButtonText(text));
     }
 }
